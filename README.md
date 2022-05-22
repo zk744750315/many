@@ -8,3 +8,7 @@
 
 
 qt控件属性的详细介绍：https://blog.csdn.net/ClementCXL/article/details/118935444?utm_medium=distribute.pc_aggpage_search_result.none-task-blog-2~aggregatepage~first_rank_ecpm_v1~rank_v31_ecpm-1-118935444-null-null.pc_agg_new_rank&utm_term=widget+%E5%92%8Cframe%E7%9A%84%E5%8C%BA%E5%88%AB&spm=1000.2123.3001.4430
+
+
+有时候会遇到乱码，解决：
+1 运行时设置为utf_8(  #pragma execution_character_set("utf-8")  ),然后在将运行时修改为utf_8，在main函数中添加语句：QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
