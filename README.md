@@ -43,3 +43,89 @@ C:\qt5.12.2\installPath\5.12.2\mingw73_64\bin
 2、用编译器命令窗下调用windeployqt命令，自动寻找需要的动态链接库。（windeployqt是调用编译器的windeployqt.exe程序，我本机的该文件路径为C:\qt5.12.2\installPath\5.12.2\mingw73_64\bin\windeployqt.exe）
 
 
+
+
+
+
+
+
+qt枚举的用法参考https://blog.csdn.net/For_1ove/article/details/123887298
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
+
+#include <QMainWindow>
+#include <QPaintEvent>
+
+
+
+QT_BEGIN_NAMESPACE
+
+
+namespace Ui { class MainWindow; }
+QT_END_NAMESPACE
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    MainWindow(QWidget *parent = nullptr);
+    ~MainWindow();
+    virtual void paintEvent(QPaintEvent *);
+    QImage* img = nullptr;
+
+    enum myEnum{
+        one,
+        two,
+        three,
+    };
+    Q_ENUM(myEnum); //Q_ENUM不能在全局使用，只能在类内 或者 namespace中使用(namespace使用Q_ENUM_NS)
+                    //使用Q_ENUM申明之后，该枚举就可以被QMetaEnum管理
+private:
+    Ui::MainWindow *ui;
+};
+#endif // MAINWINDOW_H
+
+
+
+
+//for starf study
+
+#include "mainwindow.h"
+#include "ui_mainwindow.h"
+
+#include<QDebug>
+#include<QMetaEnum>
+
+
+//QMetaEnum类提供有关枚举器的元数据。
+
+
+
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow)
+{
+    ui->setupUi(this);
+    QMetaEnum metaEnum = QMetaEnum::fromType<MainWindow::myEnum>();//返回与模板参数中的类型对应的QMetaEnum。枚举需要用Q_enum声明。
+    qDebug()<<metaEnum.enumName(); //“myEnum”
+    qDebug()<<metaEnum.isFlag();  //如果此枚举数用作标志，则返回true；否则返回false。 当用作标志时，可以使用OR运算符组合枚举数。
+    qDebug()<<metaEnum.isScoped();//如果此枚举数声明为C++11枚举类，则返回true；否则返回false。
+    qDebug()<<metaEnum.isValid(); //如果此枚举有效（有名称），则返回true；否则返回false。
+    qDebug()<<metaEnum.key(2); //返回具有给定索引的键，如果不存在这样的键，则返回0。 "three"
+     qDebug()<<metaEnum.keyCount(); //返回键个数
+     qDebug()<<metaEnum.keyToValue("two");//返回给定枚举键的整数值，如果未定义键，则返回-1。
+     qDebug()<<metaEnum.keysToValue("two|three");//返回使用OR运算符组合键的值，如果未定义键，则返回-1。请注意，键中的字符串必须以“|”分隔。
+    qDebug()<<metaEnum.name(); //返回枚举名称  myEnum
+    qDebug()<<metaEnum.scope(); //返回此枚举数在其中声明的范围。即所属类/namespace的名字  MainWindow
+    qDebug()<<metaEnum.value(2); //返回具有给定索引的值；如果没有这样的值，则返回-1。  2
+    qDebug()<<metaEnum.valueToKey(2); //根据键返回名称  three
+    qDebug()<<metaEnum.valueToKeys(1|2); // 返回表示给定值的由“|”分隔键组成的字节数组。 "two|three"
+}
+
+MainWindow::~MainWindow()
+{
+    delete ui;
+}
+
+
