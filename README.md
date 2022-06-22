@@ -12,6 +12,8 @@ qt控件属性的详细介绍：https://blog.csdn.net/ClementCXL/article/details
 
 有时候会遇到乱码，解决：
 1 运行时设置为utf_8(  #pragma execution_character_set("utf-8")  ),然后在将运行时修改为utf_8，在main函数中添加语句：QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
+QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));这句话是将全局的字符编码保存为utf8编码,也可以设置为GB2312。验证：QString a = "我是赵凯"；
+qDebug()<<(a.toLocal8Bit());
 
 
 
