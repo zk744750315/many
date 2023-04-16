@@ -141,3 +141,16 @@ vs生成dllwen文件的方法
 
 
 关于lib  dll文件的区别：在静态库中  lib文件包含了函数的声明与定义，即一个lib文件就是全部的内容，生成的结果只有一个lib文件；在动态库中1、生成的文件只有dll文件，那么这个文件需要放在目标项目的debug 或者release目录下就可以运行（更好的方法是：属性----调试-----环境中添加此dll文件的路径。详见https://blog.csdn.net/cutemypig/article/details/121945800）  2、动态库有lib  dll两个文件，这种情况动态库的使用就很常规
+
+
+qt打包成exe，放在别人电脑上无法运行，提示缺少dll文件，解决办法如下：
+需要增加一个环节：搜索一个bat文件vcvarsall.bat
+网上有的人再QT命令框中有这样的提示：Remember to call vcvarsall.bat to complete environment setup!
+
+但是我的没有，不太明白是什么意思，但是这个方法确实行之有效
+
+在命令框中输入命令：call "D:\workSoftware\vs2017\Microsoft Visual Studio\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x86。按你实际的路径输入。
+然后进行打包操作
+
+先进入自己所放exe文件的路径，cd 后接路径即可，然后windeployqt 后接某某（你的exe名字）.exe即可
+详细见：https://www.codenong.com/cs106942655/
